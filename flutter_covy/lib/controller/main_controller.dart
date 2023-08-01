@@ -9,8 +9,9 @@ import 'package:get/get.dart';
 
 /// 处理网络数据请求
 class MainController extends GetxController {
-  var stateBanner = [];
+  List<BannerListEntity> stateBanner = [];
   List<DataElement> stateArticle = [];
+  var imageUrl = "".obs;
 
   // List<BannerData> get getList => mList;
   final EasyRefreshController _controller = EasyRefreshController(
@@ -47,5 +48,11 @@ class MainController extends GetxController {
     }
     update();
     _controller.finishLoad();
+  }
+
+  Future<String?> loadData(String base64Url) async {
+    var response = await requestClient.get<String>(base64Url);
+    imageUrl.value = response ?? "";
+    return response;
   }
 }

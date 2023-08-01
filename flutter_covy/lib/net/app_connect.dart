@@ -4,7 +4,7 @@ import 'package:get/get_connect/connect.dart';
 
 import '../logger.dart';
 
-
+//Dio网络请求封装
 class AppNet extends GetConnect{
 
   @override

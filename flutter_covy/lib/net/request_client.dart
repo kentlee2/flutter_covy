@@ -4,8 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_covy/model/article_list_entity.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../model/Project_list_entity.dart';
 import '../model/banner_entity.dart';
+import '../model/category_list_entity.dart';
 import 'api_exception.dart';
 import 'network_config.dart';
 
@@ -28,6 +31,13 @@ class RequestClient {
         receiveTimeout: NetWorkConfig.readTimeOut,
         sendTimeout: NetWorkConfig.writeTimeOut);
     _dio = Dio(options);
+    _dio.interceptors.add(PrettyDioLogger(
+      requestHeader: true,
+      requestBody: true,
+      responseBody: true,
+      responseHeader: false,
+      compact: false,
+    ));
   }
 
   /// dio 本身提供了get 、post 、put 、delete 等一系列 http 请求方法,最终都是调用request,直接封装request就行
@@ -80,6 +90,12 @@ class RequestClient {
         return raw as T;
       } else if (T.toString() == (ArticleListEntity).toString()) {
         var raw = ArticleListEntity.fromJson(response.data);
+        return raw as T;
+      } else if (T.toString() == (ProjectListEntity).toString()) {
+        var raw = ProjectListEntity.fromJson(response.data);
+        return raw as T;
+      } else if(T.toString() ==(CategoryListEntity).toString()){
+        var raw = CategoryListEntity.fromJson(response.data);
         return raw as T;
       }
       return response.data;

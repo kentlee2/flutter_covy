@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               itemBuilder: (context, i) {
                                 return CachedNetworkImage(
                                     imageUrl:
-                                        logic.stateBanner[i].imagePath ?? "");
+                                    logic.stateBanner[i].imagePath);
                               },
                               itemCount: logic.stateBanner.length,
                               indicatorLayout: PageIndicatorLayout.SCALE,
