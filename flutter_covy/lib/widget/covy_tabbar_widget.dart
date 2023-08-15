@@ -9,10 +9,9 @@ import 'ProjectListWidget.dart';
 
 class CovyTabBarWidget extends StatefulWidget {
   const CovyTabBarWidget(
-      {super.key, this.tabItems, this.tabContents});
+      {super.key, this.tabItems});
 
   final List<Datum>? tabItems;
-  final List<DataElement>? tabContents;
 
   @override
   State<CovyTabBarWidget> createState() => _State();

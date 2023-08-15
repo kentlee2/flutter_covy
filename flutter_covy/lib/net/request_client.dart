@@ -1,8 +1,12 @@
 import 'dart:convert';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_covy/model/article_list_entity.dart';
+import 'package:flutter_covy/model/base_entity.dart';
+import 'package:flutter_covy/model/public_account.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -22,7 +26,7 @@ class RequestClient {
   factory RequestClient() {
     return _singletonRequestClient;
   }
-
+  final cookieJar = CookieJar();
   RequestClient._internal() {
     ///初始化 dio 配置
     var options = BaseOptions(
@@ -31,13 +35,15 @@ class RequestClient {
         receiveTimeout: NetWorkConfig.readTimeOut,
         sendTimeout: NetWorkConfig.writeTimeOut);
     _dio = Dio(options);
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      compact: false,
-    ));
+    _dio.interceptors
+      .add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        compact: false,
+      ));
+      // ..add(CookieManager(cookieJar));
   }
 
   /// dio 本身提供了get 、post 、put 、delete 等一系列 http 请求方法,最终都是调用request,直接封装request就行
@@ -87,18 +93,42 @@ class RequestClient {
     if (response.statusCode == 200) {
       if (T.toString() == (BannerEntity).toString()) {
         var raw = BannerEntity.fromJson(response.data);
+        if(raw.errorCode!=0){
+          Fluttertoast.showToast(msg: raw.errorMsg);
+        }
         return raw as T;
       } else if (T.toString() == (ArticleListEntity).toString()) {
         var raw = ArticleListEntity.fromJson(response.data);
+        if(raw.errorCode!=0){
+          Fluttertoast.showToast(msg: raw.errorMsg);
+        }
         return raw as T;
       } else if (T.toString() == (ProjectListEntity).toString()) {
         var raw = ProjectListEntity.fromJson(response.data);
+        if(raw.errorCode!=0){
+          Fluttertoast.showToast(msg: raw.errorMsg);
+        }
         return raw as T;
-      } else if(T.toString() ==(CategoryListEntity).toString()){
+      } else if (T.toString() == (CategoryListEntity).toString()) {
         var raw = CategoryListEntity.fromJson(response.data);
+        if (raw.errorCode != 0) {
+          Fluttertoast.showToast(msg: raw.errorMsg);
+        }
         return raw as T;
+      }else if(T.toString()==(PublicAccount).toString()){
+        var raw = PublicAccount.fromJson(response.data);
+        if (raw.errorCode != 0) {
+          Fluttertoast.showToast(msg: raw.errorMsg);
+        }
+        return raw as T;
+      }else{
+        var baseEntity = BaseEntity.fromJson(response.data);
+        if(baseEntity.errorCode!=0){
+          Fluttertoast.showToast(msg: baseEntity.errorMsg);
+        }
+        return baseEntity as T;
       }
-      return response.data;
+
     } else {
       var exception =
           ApiException(response.statusCode, ApiException.unknownException);
