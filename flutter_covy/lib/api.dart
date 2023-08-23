@@ -4,5 +4,6 @@ class Api {
   static String categoryList = "project/tree/json"; //项目分类
   static String projectList = "project/list/"; //项目列表数据
   static String login = "user/login"; //登录
-  static String publicAccount = "wxarticle/chapters/json "; //公众号列表
+  static String publicAccount = "wxarticle/chapters/json"; //公众号列表
+  static String publicAccountDetail = "wxarticle/list/"; //查看某个公众号历史数据
 }
