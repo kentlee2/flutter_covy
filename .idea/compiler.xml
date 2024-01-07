@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="17">
       <module name="android.path_provider_android" target="17" />
       <module name="android.sqflite" target="17" />
       <module name="android.webview_flutter_android" target="17" />

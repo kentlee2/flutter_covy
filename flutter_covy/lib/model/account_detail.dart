@@ -112,7 +112,7 @@ class DataElement {
     required this.desc,
   });
 
-  int shareDate;
+  int? shareDate;
   String projectLink;
   String prefix;
   bool canEdit;
